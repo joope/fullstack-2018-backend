@@ -29,6 +29,16 @@ let persons = [
 
 const findPerson = (id) => persons.find(p => p.id === id);
 
+const personIsValid = (person) => {
+    if (person && person.name && person.number) {
+        if (persons.find(p => p.name === person.name)){
+            return { message: 'name must be unique', status: 403 }
+        }
+        return { message: null, status: 200 }
+    }
+    return { message: 'some required fields are missing', status: 400 }
+}
+
 app.get('/', (req, res) => {
     res.send('<h1>Hello world</h1>')
 })
@@ -50,6 +60,11 @@ app.get('/api/persons/:id', (req, res) => {
 
 app.post('/api/persons/', (req, res) => {
     const person = req.body;
+    const err = personIsValid(person)
+    if (err.message) {
+        return res.status(err.status).send({error: err.message});
+    }
+
     person.id = Math.floor(Math.random()*1000000000);
 
     persons = persons.concat(person);
