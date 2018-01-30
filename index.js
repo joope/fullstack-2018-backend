@@ -32,9 +32,22 @@ app.get('/api/persons', (req, res) => {
     res.send(persons);
 })
 
+app.get('/api/persons/:id', (req, res) => {
+    const id = Number(req.params.id);
+    const person = persons.find(p => p.id === id);
+
+    if (person) {
+        res.send(person);
+    } else {
+        res.sendStatus(404);
+    }
+    
+})
+
 app.get('/info', (req, res) => {
     const length = persons.length;
-    res.send(`<p>puhelinluettelossa ${length} hengen tiedot</p>${new Date()}`)
+    const date = new Date();
+    res.send(`<p>puhelinluettelossa ${length} hengen tiedot</p>${date}`)
 })
 
 app.listen(3001, () => {
