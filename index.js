@@ -1,8 +1,10 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const morgan = require('morgan');
 const app = express();
 
 app.use(bodyParser.json());
+app.use(morgan('tiny'));
 
 let persons = [
     {
@@ -23,7 +25,7 @@ let persons = [
     {
         name: "Olli Oppiva",
         number: "040-123456",
-        id: 4
+        id: 5
     },
 ]
 
