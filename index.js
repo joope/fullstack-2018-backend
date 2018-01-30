@@ -32,6 +32,11 @@ app.get('/api/persons', (req, res) => {
     res.send(persons);
 })
 
+app.get('/info', (req, res) => {
+    const length = persons.length;
+    res.send(`<p>puhelinluettelossa ${length} hengen tiedot</p>${new Date()}`)
+})
+
 app.listen(3001, () => {
     console.log('Server started on port 3001')
 })
