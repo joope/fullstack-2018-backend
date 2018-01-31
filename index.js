@@ -4,6 +4,8 @@ const morgan = require('morgan');
 const cors = require('cors');
 const app = express();
 
+const PORT = process.env.port || 3001;
+
 morgan.token('body', (req) => {
     return JSON.stringify(req.body);
 })
@@ -94,6 +96,7 @@ app.get('/info', (req, res) => {
     res.send(`<p>puhelinluettelossa ${length} hengen tiedot</p>${date}`)
 })
 
-app.listen(3001, () => {
-    console.log('Server started on port 3001')
+
+app.listen(PORT, () => {
+    console.log('Server started on port', PORT)
 })
