@@ -73,7 +73,7 @@ app.post('/api/persons/', (req, res) => {
     const person = req.body;
     const err = personIsValid(person)
     if (err.message) {
-        return res.status(err.status).send({error: err.message});
+        return res.status(err.status).json({error: err.message});
     }
 
     person.id = Math.floor(Math.random()*1000000000);
