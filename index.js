@@ -72,19 +72,28 @@ app.get('/api/persons/:id', (req, res) => {
 })
 
 app.post('/api/persons/', (req, res) => {
-    const person = req.body;
-    const err = personIsValid(person)
-    if (err.message) {
-        return res.status(err.status).json({error: err.message});
+    const { name, number } = req.body;
+
+    if (name && number) {
+        const newPerson = new Person({
+            name,
+            number,
+            updatedAt: new Date()
+        });
+        newPerson
+            .save()
+            .then(result => res.json(result))
+            .catch(err => {
+                console.log(err)
+                res.sendStatus(500)
+            });
+        }
     }
-
-    person.id = Math.floor(Math.random()*1000000000);
-
-    persons = persons.concat(person);
-
+    // if (err.message) {
+    //     return res.status(err.status).json({error: err.message});
+    // }
     
-    res.json(person);
-})
+)
 
 app.delete('/api/persons/:id', (req, res) => {
     const id = Number(req.params.id);
