@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const cors = require('cors');
+const Person = require('./models/person');
 const app = express();
 
 const PORT = process.env.PORT || 3001;
@@ -40,8 +41,8 @@ let persons = [
 
 const findPerson = (id) => persons.find(p => p.id === id);
 
-const personIsValid = (person) => {
-    if (person && person.name && person.number) {
+const personIsValid = (person={}) => {
+    if (person.name && person.number) {
         if (persons.find(p => p.name === person.name)){
             return { message: 'name must be unique', status: 403 }
         }
@@ -55,7 +56,8 @@ app.get('/', (req, res) => {
 })
 
 app.get('/api/persons', (req, res) => {
-    res.send(persons);
+    Person.find({})
+        .then(result => res.json(result))
 })
 
 app.get('/api/persons/:id', (req, res) => {
