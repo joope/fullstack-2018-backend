@@ -51,13 +51,22 @@ const personIsValid = (person={}) => {
     return { message: 'some required fields are missing', status: 400 }
 }
 
+const filterPerson = (person) => {
+    const filtered = { ...person._doc, id: person._id };
+    delete filtered._id;
+    delete filtered.__v;
+    return filtered;
+}
+
 app.get('/', (req, res) => {
     res.send('<h1>Hello world</h1>')
 })
 
 app.get('/api/persons', (req, res) => {
     Person.find({})
-        .then(result => res.json(result))
+        .then(result => {
+            res.json(result.map(p => filterPerson(p)))
+        })
 })
 
 app.get('/api/persons/:id', (req, res) => {
@@ -82,24 +91,26 @@ app.post('/api/persons/', (req, res) => {
         });
         newPerson
             .save()
-            .then(result => res.json(result))
+            .then(result => {
+                const filteredRes = { ...result, id: result._id };
+                delete filteredRes._id;
+                delete filteredRes.__v;
+                res.json(filteredRes)
+            })
             .catch(err => {
                 console.log(err)
                 res.sendStatus(500)
             });
-        }
+    } else {
+        res.status(400).json({error: 'Missing required fields!'})
     }
-    // if (err.message) {
-    //     return res.status(err.status).json({error: err.message});
-    // }
-    
-)
+});
 
 app.delete('/api/persons/:id', (req, res) => {
-    const id = Number(req.params.id);
-    persons = persons.filter(p => p.id !== id)
-    
-    res.sendStatus(204);
+    Person
+        .remove({_id: req.params.id})
+        .then(res.sendStatus(204))
+        .catch(err => res.sendStatus(500))
 })
 
 app.get('/info', (req, res) => {
