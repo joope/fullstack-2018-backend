@@ -16,28 +16,6 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(morgan(':method :url :body :status :res[content-length] - :response-time ms'));
 
-let persons = [
-    {
-        name: "Arto Hellas",
-        number: "040-123456",
-        id: 1
-    },
-    {
-        name: "Jaakko Juupaseipäs",
-        number: "040-123456",
-        id: 2
-    },
-    {
-        name: "Helppo Heikkii",
-        number: "040-123456",
-        id: 3
-    },
-    {
-        name: "Olli Oppiva",
-        number: "040-123456",
-        id: 5
-    },
-]
 
 const findPerson = (id) => persons.find(p => p.id === id);
 
@@ -51,21 +29,14 @@ const personIsValid = (person={}) => {
     return { message: 'some required fields are missing', status: 400 }
 }
 
-const filterPerson = (person) => {
-    const filtered = { ...person._doc, id: person._id };
-    delete filtered._id;
-    delete filtered.__v;
-    return filtered;
-}
-
 app.get('/', (req, res) => {
     res.send('<h1>Hello world</h1>')
 })
 
 app.get('/api/persons', (req, res) => {
     Person.find({})
-        .then(result => {
-            res.json(result.map(p => filterPerson(p)))
+        .then(persons => {
+            res.json(persons.map(Person.format))
         })
 })
 
@@ -91,11 +62,8 @@ app.post('/api/persons/', (req, res) => {
         });
         newPerson
             .save()
-            .then(result => {
-                const filteredRes = { ...result, id: result._id };
-                delete filteredRes._id;
-                delete filteredRes.__v;
-                res.json(filteredRes)
+            .then(person => {
+                res.json(Person.format(person))
             })
             .catch(err => {
                 console.log(err)
