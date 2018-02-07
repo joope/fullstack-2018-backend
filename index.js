@@ -81,6 +81,22 @@ app.delete('/api/persons/:id', (req, res) => {
         .catch(err => res.sendStatus(500))
 })
 
+app.put('/api/persons/:id', (req, res) => {
+    const { id, name, number } = req.body;
+    const person = {
+        name,
+        number,
+    }
+    Person
+        .findByIdAndUpdate(req.params.id, person, { new: true})
+        .then(updated => {
+            res.json(Person.format(updated))
+        }).catch(err => {
+            console.log(err);
+            res.status(400).send({error: 'no such person'})
+        })
+})
+
 app.get('/info', (req, res) => {
     const length = persons.length;
     const date = new Date();
