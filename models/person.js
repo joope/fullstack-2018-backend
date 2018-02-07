@@ -24,7 +24,7 @@ personSchema.statics.format = function(person) {
     number,
     updatedAt
   };
-}
+};
 
 const Person = mongoose.model('Person', personSchema);
 

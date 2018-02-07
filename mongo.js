@@ -22,15 +22,15 @@ if (name && number) {
   newPerson
     .save()
     .then(response => {
-      console.log(`lisätään henkilö ${name} numero ${number} luetteloon`)
+      console.log(`lisätään henkilö ${name} numero ${number} luetteloon`);
       mongoose.connection.close();
-    })
+    });
 } else {
   Person
     .find({})
     .then(res => {
-      console.log(`puhelinluettelo:`)
+      console.log('puhelinluettelo:');
       res.forEach(p => console.log(p.name, p.number));
       mongoose.connection.close();
-    })
+    });
 }

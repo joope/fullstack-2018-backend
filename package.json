@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node index.js",
     "watch": "node_modules/.bin/nodemon index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint ."
   },
   "author": "joope",
   "license": "ISC",
@@ -19,6 +20,7 @@
     "morgan": "^1.9.0"
   },
   "devDependencies": {
+    "eslint": "^4.17.0",
     "nodemon": "^1.14.11"
   }
 }
