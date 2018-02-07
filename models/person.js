@@ -8,7 +8,10 @@ const url = process.env.MONGODB_URL;
 mongoose.connect(url);
 
 const personSchema = new mongoose.Schema({
-  name: String,
+  name: {
+    type: String,
+    unique: true
+  },
   number: String,
   updatedAt: Date
 });

@@ -48,8 +48,8 @@ app.post('/api/persons/', (req, res) => {
                 res.json(Person.format(person))
             })
             .catch(err => {
-                console.log(err)
-                res.sendStatus(500)
+                // console.log(err)
+                res.status(400).send({error: 'Tried to multiply same person!'})
             });
     } else {
         res.status(400).json({error: 'Missing required fields!'})
