@@ -41,14 +41,13 @@ app.get('/api/persons', (req, res) => {
 })
 
 app.get('/api/persons/:id', (req, res) => {
-    const id = Number(req.params.id);
-    const person = findPerson(id);
-
-    if (person) {
-        res.send(person);
-    } else {
-        res.sendStatus(404);
-    }
+    Person
+        .findById(req.params.id)
+        .then(person => res.send(Person.format(person)))
+        .catch(err => {
+            // console.log(err);
+            res.sendStatus(404);
+        });
 })
 
 app.post('/api/persons/', (req, res) => {
@@ -86,6 +85,7 @@ app.put('/api/persons/:id', (req, res) => {
     const person = {
         name,
         number,
+        updatedAt: new Date()
     }
     Person
         .findByIdAndUpdate(req.params.id, person, { new: true})
