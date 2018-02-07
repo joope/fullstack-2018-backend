@@ -49,16 +49,16 @@ app.post('/api/persons/', (req, res) => {
       })
       .catch(() => {
         // console.log(err)
-        res.status(400).send({error: 'Tried to multiply same person!'});
+        res.status(400).send({ error: 'Tried to multiply same person!' });
       });
   } else {
-    res.status(400).json({error: 'Missing required fields!'});
+    res.status(400).json({ error: 'Missing required fields!' });
   }
 });
 
 app.delete('/api/persons/:id', (req, res) => {
   Person
-    .remove({_id: req.params.id})
+    .remove({ _id: req.params.id })
     .then(res.sendStatus(204))
     .catch(() => res.sendStatus(500));
 });
@@ -71,12 +71,12 @@ app.put('/api/persons/:id', (req, res) => {
     updatedAt: new Date()
   };
   Person
-    .findByIdAndUpdate(req.params.id, person, { new: true})
+    .findByIdAndUpdate(req.params.id, person, { new: true })
     .then(updated => {
       res.json(Person.format(updated));
     }).catch(() => {
       // console.log(err);
-      res.status(400).send({error: 'no such person'});
+      res.status(400).send({ error: 'no such person' });
     });
 });
 

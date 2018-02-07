@@ -1,7 +1,9 @@
-require('dotenv').config();
+if ( process.env.NODE_ENV !== 'production' ) {
+  require('dotenv').config();
+}
 const mongoose = require('mongoose');
 
-const url = process.env.DB_URL;
+const url = process.env.MONGODB_URL;
 
 mongoose.connect(url);
 
@@ -11,7 +13,7 @@ const Person = mongoose.model('Person', {
   updatedAt: Date
 });
 
-const [a, b, name, number] = process.argv;
+const [name, number] = process.argv.slice(2,4);
 
 if (name && number) {
   const newPerson = new Person({
@@ -21,7 +23,7 @@ if (name && number) {
   });
   newPerson
     .save()
-    .then(response => {
+    .then(() => {
       console.log(`lisätään henkilö ${name} numero ${number} luetteloon`);
       mongoose.connection.close();
     });
