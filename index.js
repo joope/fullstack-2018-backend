@@ -16,23 +16,6 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(morgan(':method :url :body :status :res[content-length] - :response-time ms'));
 
-
-const findPerson = (id) => persons.find(p => p.id === id);
-
-const personIsValid = (person={}) => {
-    if (person.name && person.number) {
-        if (persons.find(p => p.name === person.name)){
-            return { message: 'name must be unique', status: 403 }
-        }
-        return { message: null, status: 200 }
-    }
-    return { message: 'some required fields are missing', status: 400 }
-}
-
-app.get('/', (req, res) => {
-    res.send('<h1>Hello world</h1>')
-})
-
 app.get('/api/persons', (req, res) => {
     Person.find({})
         .then(persons => {
